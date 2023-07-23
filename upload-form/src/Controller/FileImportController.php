@@ -4,7 +4,7 @@
 namespace App\Controller;
 
 use App\Form\FileImportType;
-use App\Service\FileImporter;
+use App\Service\FileImportService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,17 +13,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class FileImportController extends AbstractController
 {
     /**
-     * @Route("/import", name="file_import")
+     * @Route("/", name="file_import")
      */
-    public function import(Request $request, FileImporter $fileImporter): Response
+    public function import(Request $request, FileImportService $fileImporterService): Response
     {
         $form = $this->createForm(FileImportType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $file = $form->get('file')->getData();
-            // Pass the file to the FileImporter service for processing
-            $success = $fileImporter->importFile($file);
+            // Pass the file to the FileImportService service for processing
+            $success = $fileImporterService->importFile($file);
 
             if ($success) {
                 $this->addFlash('success', 'Le fichier a été importé avec succès !');
