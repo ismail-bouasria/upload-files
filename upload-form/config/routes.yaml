@@ -1,5 +1,15 @@
 # routes.yaml
-app_file_import:
+
+file_import:
   path: /
   controller: App\Controller\FileImportController::import
 
+files:
+  path: /files
+  controller : App\Controller\FileImportController::filesListe
+  methods: [GET]
+
+files_infos:
+  path: /file-infos/{id}
+  controller : App\Controller\FileImportController::filesInfos
+  methods: [GET]

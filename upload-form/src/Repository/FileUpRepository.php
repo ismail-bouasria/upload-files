@@ -2,27 +2,27 @@
 
 namespace App\Repository;
 
-use App\Entity\File;
+use App\Entity\FileUp;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<File>
+ * @extends ServiceEntityRepository<FileUp>
  *
- * @method File|null find($id, $lockMode = null, $lockVersion = null)
- * @method File|null findOneBy(array $criteria, array $orderBy = null)
- * @method File[]    findAll()
- * @method File[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method FileUp|null find($id, $lockMode = null, $lockVersion = null)
+ * @method FileUp|null findOneBy(array $criteria, array $orderBy = null)
+ * @method FileUp[]    findAll()
+ * @method FileUp[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class FileRepository extends ServiceEntityRepository
+class FileUpRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, File::class);
+        parent::__construct($registry, FileUp::class);
     }
 
 //    /**
-//     * @return File[] Returns an array of File objects
+//     * @return FileUp[] Returns an array of FileUp objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -36,7 +36,7 @@ class FileRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?File
+//    public function findOneBySomeField($value): ?FileUp
 //    {
 //        return $this->createQueryBuilder('f')
 //            ->andWhere('f.exampleField = :val')

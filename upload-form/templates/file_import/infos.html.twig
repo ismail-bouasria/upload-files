@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Informations fichier{% endblock %}
+
+{% block body %}
+    <div class="w-screen">
+    <h2 class="m-3"> Informations Fichier</h2>
+
+    <h4> Informations</h4>
+
+    <table class="table table-bordered w-screen">
+        <thead>
+        <tr class="table-light">
+            {% for name in names %}
+                <th>{{ name }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            {% for value in values %}
+        <tr>
+            {% for data in value %}
+
+                <td>{{ data }}</td>
+
+            {% endfor %}
+        </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+{% endblock %}
