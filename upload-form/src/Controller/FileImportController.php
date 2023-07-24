@@ -21,10 +21,10 @@ class FileImportController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $file = $form->get('file')->getData();
+            $file = $form->get('data')->getData();
             // Pass the file to the FileImportService service for processing
             $success = $fileImporterService->importFile($file);
-
+dd($success);
             if ($success) {
                 $this->addFlash('success', 'Le fichier a été importé avec succès !');
             } else {
