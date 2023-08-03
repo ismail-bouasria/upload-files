@@ -8,6 +8,7 @@ use App\Repository\FileUpRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use DateTime;
 
 class FileImportService
 {
@@ -24,52 +25,75 @@ class FileImportService
         $this->fileUpRepository = $fileUpRepository;
         $this->entityManager = $entityManager;
     }
-    
 
-    public function importFile(UploadedFile $file): bool
+
+    public function importFile(UploadedFile $file)
+
     {
-        try {
+        // Load the Excel file
+        $spreadsheet = IOFactory::load($file);
 
-            // Load the Excel file
-            $spreadsheet = IOFactory::load($file);
+        $sheet = $spreadsheet->getActiveSheet();
+        $data = [];
 
-            $data = [];
-            foreach ($spreadsheet->getWorksheetIterator() as $worksheet) {
-                $worksheetTitle = $worksheet->getTitle();
-                $data[$worksheetTitle] = [
-                    'columnNames' => [],
-                    'columnValues' => [],
-                ];
-                foreach ($worksheet->getRowIterator() as $row) {
-                    $rowIndex = $row->getRowIndex();
-                    if ($rowIndex) {
-                        $data[$worksheetTitle]['columnValues'][$rowIndex] = [];
-                    }
-                    $cellIterator = $row->getCellIterator();
-                    $cellIterator->setIterateOnlyExistingCells(true); // Loop over all cells, even if it is not set
-                    foreach ($cellIterator as $cell) {
-                        if ($rowIndex === 1) {
-                            $data[$worksheetTitle]['columnNames'][] = $cell->getCalculatedValue();
-                        }
-                        if ($rowIndex > 2) {
-                            $data[$worksheetTitle]['columnValues'][$rowIndex][] = $cell->getCalculatedValue();
-                        }
-                    }
-                }
+        foreach ($sheet->getRowIterator() as $row) {
+
+            $rowData = [];
+            foreach ($row->getCellIterator() as $cell) {
+                $rowData[] = $cell->getValue();
             }
-            // instance of entity
-            $dataFile = new FileUp();
-            $dataFile->setData($data);
-            // Persist the entity
-            $this->entityManager->persist($dataFile);
 
-            // Flush all the changes to the database
-            $this->entityManager->flush();
+            $data[] = $rowData;
 
-            return true;
-        } catch (\Exception $e) {
-            return false;
         }
+
+       $length = count($data);
+
+        for ($i = 1; $i < $length; $i++) {
+
+            $dataFile = new FileUp();
+            $dataFile->setCompteAffaire($data[$i][0])
+                     ->setCompteEvenement($data[$i][1])
+                     ->setCompteDernierEvenement($data[$i][2])
+                     ->setNumeroFiche($data[$i][3])
+                     ->setLibelleCivilite($data[$i][4])
+                     ->setProprietaireActuelVehicule($data[$i][5])
+                     ->setNom($data[$i][6])
+                     ->setPrenom($data[$i][7])
+                     ->setNnumeroNomVoie($data[$i][8])
+                     ->setComplementAdresse($data[$i][9])
+                     ->setCodePostal($data[$i][10])
+                     ->setVille($data[$i][11])
+                     ->setTelephoneDomicile($data[$i][12])
+                     ->setTelephonePortable($data[$i][13])
+                     ->setTelephoneJob($data[$i][14])
+                     ->setEmail($data[$i][15])
+                     ->setDateCirculation( null)
+                     ->setDateAchat(null)
+                     ->setDateDernierEvenement(null)
+                     ->setLibelleMarque($data[$i][19])
+                     ->setLibelleModele($data[$i][20])
+                     ->setVersion($data[$i][21])
+                     ->setVin($data[$i][22])
+                     ->setImmatriculation($data[$i][23])
+                     ->setTypeProspect($data[$i][24])
+                     ->setKilometrage($data[$i][25])
+                     ->setLibelleEnergie($data[$i][26])
+                     ->setVendeurVn($data[$i][27])
+                     ->setVendeurVo($data[$i][28])
+                     ->setFacturation($data[$i][29])
+                     ->setTypeVnVo($data[$i][30])
+                     ->setNumeroDossier($data[$i][31])
+                     ->setIntermediaireVente($data[$i][32])
+                     ->setDateVeh(null)
+                     ->setOrigineEvenement($data[$i][34]);
+
+            // Persist and flush the entity to save it in the database
+            $this->entityManager->persist($dataFile);
+            $this->entityManager->flush();
+        }
+
+
     }
 
 }

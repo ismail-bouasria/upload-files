@@ -19,25 +19,24 @@ class FileImportController extends AbstractController
     {
         $form = $this->createForm(FileImportType::class);
         $form->handleRequest($request);
-        $message = '';
+        $message = 'Le fichier a été importé avec succès !';
 
         if ($form->isSubmitted() && $form->isValid()) {
             $file = $form->get('file')->getData();
 
             // Pass the file to the FileImportService service for processing
-            $success = $fileImporterService->importFile($file);
+           $fileImporterService->importFile($file);
 
-            if ($success) {
-
-                $message = 'Le fichier a été importé avec succès !';
-
-            } else {
+            if (!$file) {
                 $message = 'Une erreur s\'est produite lors de l\'import du fichier.';
+                return $this->redirectToRoute('file_import/index.html.twig', [
+                    'message' => $message,
+                ]);
             }
         }
         return $this->render('file_import/index.html.twig', [
             'form' => $form->createView(),
-            'message' => $message,
+            'message' => $message
         ]);
     }
 
@@ -60,22 +59,12 @@ class FileImportController extends AbstractController
     {
         $readFile = $fileUpRepository->find($id);
 
-        $datas = $readFile->getData();
 
 
 
-        foreach($datas as $data){
-           $values= $data["columnValues"];
 
-                return $this->render('file_import/infos.html.twig', [
-                    'names' => $data["columnNames"],
-                    'values' => $data["columnValues"],
-                ]);
-
-
-
-        }
-
+        return $this->render('file_import/infos.html.twig', [
+        ]);
 
     }
 
