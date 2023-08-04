@@ -6,10 +6,10 @@ file_import:
 
 files:
   path: /files
-  controller : App\Controller\FileImportController::filesListe
+  controller : App\Controller\FileImportController::files
   methods: [GET]
 
 files_infos:
-  path: /file-infos/{id}
-  controller : App\Controller\FileImportController::filesInfos
+  path: /files-infos.json
+  controller : App\Controller\FileImportController::filesDataAjax
   methods: [GET]

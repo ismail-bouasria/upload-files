@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\File;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,7 +16,16 @@ class FileImportType extends AbstractType
             ->add('file', FileType::class, [
                 'label' => 'Sélectionner le fichier ',
                 'attr' => [
-                    'accept' => '.xlsx', // Accept only .xlsx files
+                    'accept' => '.xlsx', // Accepte que les fichiers .xlsx
+                ],
+                'required' => true,
+                'constraints' => [
+                    new File([
+                        'mimeTypes' => [
+                            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                        ],
+                        'mimeTypesMessage' => 'Veuillez télécharger un fichier au format XLSX.',
+                    ]),
                 ],
             ]);
     }

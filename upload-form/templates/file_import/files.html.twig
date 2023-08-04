@@ -1,36 +1,112 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} ReadFiles !{% endblock %}
+{% block title %}Informations fichier{% endblock %}
 
 {% block body %}
-
-<div class="d-flex justify-content-center w-100">
-    <div class="card w-50 mt-5" >
-        <div class="card-header">
-            <h2>Importer un fichier</h2>
-        </div>
-        <div class="card-body">
-            <table class="table table-bordered table-responsive-sm  ">
-                <thead>
-                <tr class="table-light">
-                    <th>Fichiers Importés</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for file in files %}
-                    <tr>
-                        <td> <a href="{{ path('files_infos',{'id': file.id}) }}">Fichier {{ file.id }}</a> </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="5">aucun résultat trouvé</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <div class="card-footer">
-        </div>
+    <div class="w-screen">
+        <table id="dataTable" class="display w-screen">
+            <thead>
+            <tr>
+                <th>compteAffaire</th>
+                <th>compteEvent</th>
+                <th>dernierEvent</th>
+                <th>numéroFiche</th>
+                <th>civilite</th>
+                <th>proprietaire</th>
+                <th>nom</th>
+                <th>prenom</th>
+                <th>numNomVoie</th>
+                <th>adresse</th>
+                <th>codePostal</th>
+                <th>ville</th>
+                <th>telDomicile</th>
+                <th>telPortable</th>
+                <th>telJob</th>
+                <th>email</th>
+                <th>dateCirculation</th>
+                <th>dateAchat</th>
+                <th>dateDernierEvent</th>
+                <th>Marque</th>
+                <th>Model</th>
+                <th>version</th>
+                <th>VIN</th>
+                <th>immatriculation</th>
+                <th>prospect</th>
+                <th>kilomettrage</th>
+                <th>energie</th>
+                <th>vendeurVN</th>
+                <th>vendeurVO</th>
+                <th>commentaire</th>
+                <th>dossier</th>
+                <th>intermediaireVente</th>
+                <th>DateEvent</th>
+                <th>origine</th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>
+                <th>Name</th>
+            </tr>
+            </tfoot>
+        </table>
     </div>
-</div>
+
+    <script>
+        new window.DataTable('#dataTable', {
+            responsive: true,
+            ajax: {
+                url: '/files-infos.json',
+                dataSrc: '',
+                error: function(xhr, status, error) {
+                    console.log("Error:", error);
+                    console.log("Status:", status);
+                    console.log("Response Text:", xhr.responseText);
+                }
+            },
+            columns: [
+                { data: 'compteAffaire' },
+                { data: 'compteEvent' },
+                { data: 'dernierEvent' },
+                { data: 'numéroFiche' },
+                { data: 'civilite' },
+                { data: 'proprietaire' },
+                { data: 'nom' },
+                { data: 'prenom' },
+                { data: 'numNomVoie' },
+                { data: 'adresse' },
+                { data: 'codePostal' },
+                { data: 'ville' },
+                { data: 'telDomicile' },
+                { data: 'telPortable' },
+                { data: 'telJob' },
+                { data: 'email' },
+                { data: 'dateCirculation' },
+                { data: 'dateAchat' },
+                { data: 'dateDernierEvent' },
+                { data: 'Marque' },
+                { data: 'Model' },
+                { data: 'version' },
+                { data: 'VIN' },
+                { data: 'immatriculation' },
+                { data: 'prospect' },
+                { data: 'kilomettrage' },
+                { data: 'energie' },
+                { data: 'vendeurVN' },
+                { data: 'vendeurVO' },
+                { data: 'commentaire' },
+                { data: 'dossier' },
+                { data: 'intermediaireVente' },
+                { data: 'DateEvent' },
+                { data: 'origine' }
+        ]
+
+        });
+    </script>
 {% endblock %}
+
+
+
+
+
+
+

@@ -7,7 +7,14 @@
         <div class="card w-50 mt-5" >
             <div class="card-header">
                 <h2>Importer un fichier</h2>
-                 <p> {{ message }}</p>
+                {% for flashType, flashMessages in app.flashes %}
+                    {% set alertClass = flashType == 'success' ? 'alert-success' : 'alert-danger' %}
+                    {% for flashMessage in flashMessages %}
+                        <div class="alert {{ alertClass }}">
+                            {{ flashMessage }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
             </div>
             <div class="card-body">
                 {{ form_start(form) }}
